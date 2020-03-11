@@ -8,13 +8,13 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/miworkWord"
+        android:id="@+id/miwork_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="lutti" />
 
     <TextView
-        android:id="@+id/englishWord"
+        android:id="@+id/default_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="one" />
