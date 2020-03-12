@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity
 
         // Find the View that shows the numbers category
         TextView numberTvi = (TextView) findViewById(R.id.numbers);
-
         TextView familyTvi = (TextView) findViewById(R.id.family);
         TextView colorTvi = (TextView) findViewById(R.id.colors);
         TextView phrasesTvi = (TextView) findViewById(R.id.phrases);
