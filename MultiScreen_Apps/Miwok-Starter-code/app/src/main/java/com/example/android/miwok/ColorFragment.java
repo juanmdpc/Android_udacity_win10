@@ -3,16 +3,21 @@ package com.example.android.miwok;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PhrasesActivity extends AppCompatActivity
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ColorFragment extends Fragment
 {
     /** Handles playback of all the sound files */
     private MediaPlayer mMediaPlayer;
@@ -57,7 +62,7 @@ public class PhrasesActivity extends AppCompatActivity
 
                     }
                     else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
-                                focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
+                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
                     {
                         // The AUDIOFOCUS_LOSS_TRANSIENT case means that we've lost audio focus
                         // short amount of time. he AUDIOFOCUS_LOSS_TRANSIENT_DUCK case means that
@@ -72,38 +77,40 @@ public class PhrasesActivity extends AppCompatActivity
                 }
             };
 
+    public ColorFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.word_list);
+        View rootView = inflater.inflate(R.layout.word_list, container, false);
 
         // Create and setup the {@link AudioManager} to request audio focus
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 
         // Create a list of words
         final ArrayList<Word> words = new ArrayList<>();
 
-        words.add(  new Word("Where are you going?","minto wuksus", R.raw.phrase_where_are_you_going));
-        words.add(new Word("What is your name?","tinnә oyaase'nә", R.raw.phrase_what_is_your_name));
-        words.add(new Word("My name is...","oyaaset...", R.raw.phrase_my_name_is));
-        words.add(new Word("how are you feeling?","michәksәs?", R.raw.phrase_how_are_you_feeling));
-        words.add(new Word("I’m feeling good.","kuchi achit", R.raw.phrase_im_feeling_good));
-        words.add(new Word("Are you coming?","әәnәs'aa?", R.raw.phrase_are_you_coming));
-        words.add(new Word("Yes, I’m coming.","hәә’ әәnәm", R.raw.phrase_yes_im_coming));
-        words.add(new Word("I’m coming.","әәnәm", R.raw.phrase_im_coming));
-        words.add(new Word("Let’s go.","yoowutis", R.raw.phrase_lets_go));
-        words.add(new Word("Come here.","әnni'nem", R.raw.phrase_come_here));
+        words.add(new Word("red","weṭeṭṭi", R.drawable.color_red, R.raw.color_red));
+        words.add(new Word("green","chokokki", R.drawable.color_green, R.raw.color_green));
+        words.add(new Word("brown","ṭakaakki", R.drawable.color_brown, R.raw.color_brown));
+        words.add(new Word("gray","ṭopoppi", R.drawable.color_gray, R.raw.color_gray));
+        words.add(new Word("black","kululli", R.drawable.color_black, R.raw.color_black));
+        words.add(new Word("white","kelelli", R.drawable.color_white, R.raw.color_white));
+        words.add(new Word("dusty yellow","ṭopiisә", R.drawable.color_dusty_yellow, R.raw.color_dusty_yellow));
+        words.add(new Word("mustard yellow","chiwiiṭә", R.drawable.color_mustard_yellow, R.raw.color_mustard_yellow));
 
         // Create an {@link WordAdapter}, whose data source is a list of {@link Word}s. The
         // adapter knows how to create list items for each item in the list.
         WordAdapter adapter =
-                new WordAdapter(this, words,  R.color.category_phrases);
+                new WordAdapter(getActivity(), words,  R.color.category_colors);
 
         // Find the {@link ListView} object in the view hierarchy of the {@link Activity}.
         // There should be a {@link ListView} with the view ID called list, which is declared in the
         // word_list.xml layout file.
-        ListView listView = (ListView) findViewById(R.id.list);
+        ListView listView = (ListView) rootView.findViewById(R.id.list);
 
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Word} in the list.
@@ -121,9 +128,6 @@ public class PhrasesActivity extends AppCompatActivity
                 // Get the {@link Word} object at the given position the user clicked on
                 Word word = words.get(position);
 
-                // Request audio focus so in order to play the audio file. The app needs to play a
-                // short audio file, so we will request audio focus with a short amount of time
-                // with AUDIOFOCUS_GAIN_TRANSIENT.
                 int result = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener,
                         // Use the music stream.
                         AudioManager.STREAM_MUSIC,
@@ -136,7 +140,7 @@ public class PhrasesActivity extends AppCompatActivity
 
                     // Create and setup the {@link MediaPlayer} for the audio resource associated
                     // with the current word
-                    mMediaPlayer = MediaPlayer.create(PhrasesActivity.this, word.getmAudioResouceId());
+                    mMediaPlayer = MediaPlayer.create(getActivity(), word.getmAudioResouceId());
 
                     // Start the audio file
                     mMediaPlayer.start();
@@ -147,10 +151,12 @@ public class PhrasesActivity extends AppCompatActivity
                 }
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop()
+    public void onStop()
     {
         super.onStop();
         // When the activity is stopped, release the media player resources because we won't
