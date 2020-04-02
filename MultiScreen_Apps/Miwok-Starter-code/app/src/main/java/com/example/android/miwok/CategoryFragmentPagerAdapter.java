@@ -60,11 +60,11 @@ public class CategoryFragmentPagerAdapter extends FragmentPagerAdapter
     {
         switch (position)
         {
-            case 1:
+            case 0:
                 return mContext.getString(R.string.category_numbers);
-            case 2:
+            case 1:
                 return mContext.getString(R.string.category_family);
-            case 3:
+            case 2:
                 return mContext.getString(R.string.category_colors);
             default:
                 return mContext.getString(R.string.category_phrases);

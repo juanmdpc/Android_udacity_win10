@@ -2,6 +2,9 @@
     <string name="app_name">Tour-Guide</string>
     <string name="category_restaurants">Restaurantes</string>
     <string name="category_museums">Museos</string>
-    <string name="category_tourist_places">Lugares Turisticos</string>
+    <string name="category_tourist_places">Lugares</string>
     <string name="category_slang">Jergas</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

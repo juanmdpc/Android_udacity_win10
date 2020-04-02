@@ -1,11 +1,15 @@
 package com.example.tour_guide;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.google.android.material.tabs.TabLayout;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -16,50 +20,24 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Find the View for each category
-        TextView restaurantsTvi = findViewById(R.id.restaurants);
-        TextView museumsTvi = findViewById(R.id.museums);
-        TextView placesTvi = findViewById(R.id.places);
-        TextView slangTvi = findViewById(R.id.slang);
+        // Find the view pager that will allow the user to swipe between fragments
+        ViewPager viewPager = findViewById(R.id.view_pager);
 
-        restaurantsTvi.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, RestaurantsActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Create an adapter that knows which fragment should be shown on each page.
+        PagerAdapter adapter = new InformationPagerAdapter(getSupportFragmentManager(), this);
 
-        museumsTvi.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, MuseumsActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Set the adapter onto the view pager.
+        viewPager.setAdapter(adapter);
 
-        placesTvi.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, PlacesActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Find the tab layout that shows the tabs.
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
 
-        slangTvi.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(MainActivity.this, SlangActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Connect the tab layout with the view pager. This will
+        // 1. Update the tab layout when the view pager is swiped.
+        // 2. Update the view pager when a tab is selected.
+        // 3. Set the tab layout's tab names with the view pager's adapter's titles
+        // by calling onPageTitle()
+        tabLayout.setupWithViewPager(viewPager);
+
     }
 }

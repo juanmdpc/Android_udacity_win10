@@ -6,56 +6,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_color"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <com.google.android.material.tabs.TabLayout
+        style="@style/CategoryTab"
+        android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/category_restaurants">
-        <TextView
-            android:id="@+id/restaurants"
-            style="@style/CategoryStyle"
-            android:text="@string/category_restaurants"
-            android:background="?android:selectableItemBackground"
-            />
-    </FrameLayout>
+        app:tabMode="fixed" />
 
-
-    <FrameLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_museums">
-
-        <TextView
-            android:id="@+id/museums"
-            style="@style/CategoryStyle"
-            android:text="@string/category_museums"
-            android:background="?android:selectableItemBackground" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_tourist_places">
-
-        <TextView
-            android:id="@+id/places"
-            style="@style/CategoryStyle"
-            android:text="@string/category_tourist_places"
-            android:background="?android:selectableItemBackground" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/category_slang">
-
-        <TextView
-            android:id="@+id/slang"
-            style="@style/CategoryStyle"
-            android:text="@string/category_slang"
-            android:background="?android:selectableItemBackground" />
-    </FrameLayout>
-
-
+        android:layout_height="match_parent"/>
 </LinearLayout>

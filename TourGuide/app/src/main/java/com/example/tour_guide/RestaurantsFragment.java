@@ -1,26 +1,34 @@
 package com.example.tour_guide;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MuseumsActivity extends AppCompatActivity
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class RestaurantsFragment extends Fragment
 {
+
     /** Handles playback of all the sound files */
     private MediaPlayer mMediaPlayer;
 
     /**
      * This listener gets triggered when the {@link MediaPlayer} has completed playing the audio file.
      */
-    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener()
+    private MediaPlayer.OnCompletionListener mCompleteListener = new MediaPlayer.OnCompletionListener()
     {
         @Override
         public void onCompletion(MediaPlayer mp)
@@ -51,7 +59,7 @@ public class MuseumsActivity extends AppCompatActivity
                         releaseMediaPlayer();
                     }
                     else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
-                                focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
+                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
                     {
                         // The AUDIOFOCUS_LOSS_TRANSIENT case that we've lost audio focus
                         // short amount of time. The AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK case
@@ -66,38 +74,42 @@ public class MuseumsActivity extends AppCompatActivity
                 }
             };
 
+    public RestaurantsFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.information_list);
+        View rootView = inflater.inflate(R.layout.information_list, container, false);
 
         // Create and set up the {@link AudioManager} to request audio focus.
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 
         // Create a list of Information objects
         final ArrayList<Information> informations = new ArrayList<>();
 
-        informations.add(new Information("Arte Italiano","Av. Garcilaso 153", R.drawable.museo_arte_italiano, R.raw.museo_arte_italiano));
-        informations.add(new Information("Arte de Lima","Av. Rivaguero 443",R.drawable.museo_arte_lima, R.raw.museo_arte_lima));
-        informations.add(new Information("Casa de la Gastronomia Peruana","Av. Los Cordales 512",R.drawable.museo_casa_gastronomia_peruana, R.raw.museo_casa_gastronomia_peruana));
-        informations.add(new Information("LUM","Av. Miguel Grau 124",R.drawable.museo_lum, R.raw.museo_lum));
-        informations.add(new Information("Arqueologia, Antropologia e Historia Peruana","Av. Manuel Olguin 233",R.drawable.museo_nacional_arqueologa_antropologa_historia_peru, R.raw.museo_nacional_arqueologa_antropologa_historia_per));
-        informations.add(new Information("Cultura Peruana","Av. Perales 587",R.drawable.museo_nacional_cultura_peruana, R.raw.museo_nacional_cultura_peruana));
-        informations.add(new Information("Sitio Arturo Jimenez Borja","Av. Los Girasoles 229",R.drawable.museo_sitio_arturo_jimnez_borja, R.raw.museo_sitio_arturo_jimnez_borja));
-        informations.add(new Information("Sitio de Huaca Pucllana","Av. El Muro 574",R.drawable.museo_sitio_huaca_pucllana, R.raw.museo_sitio_huaca_pucllana));
-        informations.add(new Information("Sitio de Huallamarca","Av. Panama 149",R.drawable.museo_sitio_huallamarca, R.raw.museo_sitio_huallamarca));
-        informations.add(new Information("Sitio de Pachacamac","Av. Los Peregrinos 554",R.drawable.museo_sitio_pachacamac, R.raw.museo_sitio_pachacamac));
+        informations.add(new Information("AmorAmar","Av. Garcilaso 153", R.drawable.restaurante_amoramar, R.raw.restaurante_amoramar));
+        informations.add(new Information("Nanka","Av. Rivaguero 443", R.drawable.restaurant_nanka, R.raw.restaurant_nanka));
+        informations.add(new Information("Central","Av. Los Cordales 512", R.drawable.restaurante_central, R.raw.restaurante_central));
+        informations.add(new Information("El Hornero","Av. Miguel Grau 124", R.drawable.restaurante_el_hornero, R.raw.restaurante_el_hornero));
+        informations.add(new Information("La Cuadra de Salvador","Av. Manuel Olguin 233", R.drawable.restaurante_la_cuadra_de_salvador, R.raw.restaurante_la_cuadra_de_salvador));
+        informations.add(new Information("La Rosa Nautica","Av. Perales 587", R.drawable.restaurante_la_rosa_nautica, R.raw.restaurante_la_rosa_nautica));
+        informations.add(new Information("Mayta","Av. Los Girasoles 229", R.drawable.restaurante_mayta, R.raw.restaurante_mayta));
+        informations.add(new Information("Social","Av. El Muro 574", R.drawable.restaurante_social, R.raw.restaurante_social));
+        informations.add(new Information("IK","Av. Panama 149", R.drawable.restaurante_ik, R.raw.restaurante_ik));
+        informations.add(new Information("La Cabrera","Av. Los Peregrinos 554", R.drawable.restaurante_la_cabrera, R.raw.restaurante_la_cabrera));
 
         // Create an {@link InformationAdapter}, whose data source is a list of {@link Information}s.
         // The adapter know hows to create list items for each item in the list.
         InformationAdapter adapter =
-                new InformationAdapter(this, informations, R.color.category_museums);
+                new InformationAdapter(getActivity(), informations, R.color.category_restaurants);
 
         // Find the {@ListView} object in the view hierarchy of the {@link Activity}.
         // The should be a {@link ListView} with the view ID called list, which is declared in the
         // word_list.xml layout file.
-        ListView listView = findViewById(R.id.list);
+        ListView listView = rootView.findViewById(R.id.list);
 
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Information} in the list.
@@ -130,21 +142,23 @@ public class MuseumsActivity extends AppCompatActivity
 
                     // Create and set up the {@link MediaPlayer} for the audio resource associated
                     // with the current Information object.
-                    mMediaPlayer = MediaPlayer.create(MuseumsActivity.this, information.getmAudioResourceId());
+                    mMediaPlayer = MediaPlayer.create(getActivity(), information.getmAudioResourceId());
 
                     // Start the audio file.
                     mMediaPlayer.start();
 
                     // Set up listener on the media player, so that we can stop and release the
                     // media player once the sound has finished playing.
-                    mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
+                    mMediaPlayer.setOnCompletionListener(mCompleteListener);
                 }
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop()
+    public void onStop()
     {
         super.onStop();
         // When the activity is stopped, release the media player resources because we won't
@@ -155,7 +169,7 @@ public class MuseumsActivity extends AppCompatActivity
     /**
      * Clean up the media player by releasing its resources.
      */
-    public void releaseMediaPlayer()
+    private void releaseMediaPlayer()
     {
         // If the media player is not null, then it may be currently playing a sound.
         if (mMediaPlayer != null)

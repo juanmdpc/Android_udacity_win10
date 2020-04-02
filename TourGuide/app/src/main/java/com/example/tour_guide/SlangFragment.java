@@ -1,19 +1,27 @@
 package com.example.tour_guide;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class PlacesActivity extends AppCompatActivity
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class SlangFragment extends Fragment
 {
+
     /** Handles playback of all the sound files */
     private MediaPlayer mMediaPlayer;
 
@@ -66,38 +74,43 @@ public class PlacesActivity extends AppCompatActivity
                 }
             };
 
+
+    public SlangFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.information_list);
+        View rootView = inflater.inflate(R.layout.information_list, container, false);
 
         // Create and set up the {@link AudioManager} to request audio focus.
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 
         // Create a list of Information objects
         final ArrayList<Information> informations = new ArrayList<>();
 
-        informations.add(new Information("Barranco","Av. Garcilaso 153", R.drawable.lugar_turistico_barrancho, R.raw.lugar_turistico_barrancho));
-        informations.add(new Information("Barrio Chino","Av. Rivaguero 443",R.drawable.lugar_turistico_barrio_chino, R.raw.lugar_turistico_barrio_chino));
-        informations.add(new Information("Circuito Magico de las Aguas","Av. Los Cordales 512",R.drawable.lugar_turistico_circuito_magico_agua, R.raw.lugar_turistico_circuito_magico_agua));
-        informations.add(new Information("Convento San Francisco","Av. Miguel Grau 124",R.drawable.lugar_turistico_convento_san_franscisco, R.raw.lugar_turistico_convento_san_franscisco));
-        informations.add(new Information("Larcomar","Av. Manuel Olguin 233",R.drawable.lugar_turistico_larcomar, R.raw.lugar_turistico_larcomar));
-        informations.add(new Information("Malecon","Av. Perales 587",R.drawable.lugar_turistico_malecon, R.raw.lugar_turistico_malecon));
-        informations.add(new Information("Mercado Central","Av. Los Girasoles 229",R.drawable.lugar_turistico_mercado_central, R.raw.lugar_turistico_mercado_central));
-        informations.add(new Information("Parque del Amor","Av. El Muro 574",R.drawable.lugar_turistico_parque_amor, R.raw.lugar_turistico_parque_amor));
-        informations.add(new Information("Plaza de Armas","Av. Panama 149",R.drawable.lugar_turistico_plaza_de_armas, R.raw.lugar_turistico_plaza_de_armas));
-        informations.add(new Information("Plaza San Martin","Av. Los Peregrinos 554",R.drawable.lugar_turistico_plaza_san_martin, R.raw.lugar_turistico_plaza_san_martin));
+        informations.add(new Information("Bien helenas por favor","Bien frías por favor", R.raw.jergas_peruanas_bien_helena));
+        informations.add(new Information("Calla pisado","Calla templado", R.raw.jergas_peruanas_calla_pisado));
+        informations.add(new Information("Estoy aguja","No tengo dinero", R.raw.jergas_peruanas_estoy_aguja));
+        informations.add(new Information("Estoy en la chamba","Estoy en el trabajo", R.raw.jergas_peruanas_estoy_en_chamba));
+        informations.add(new Information("Hablas pan con mango","Dices cosas sin sentido", R.raw.jergas_peruanas_hablas_pan_con_mango));
+        informations.add(new Information("Que gil eres","Que idiota eres", R.raw.jergas_peruanas_que_gil_eres));
+        informations.add(new Information("Unas chelas","Unas cervezas", R.raw.jergas_peruanas_unas_chelas));
+        informations.add(new Information("Vamos a latear","Vamos a caminar", R.raw.jergas_peruanas_vamos_a_latear));
+        informations.add(new Information("Voy a jatear","Ya me voy a dormir", R.raw.jergas_peruanas_voy_a_jatear));
+        informations.add(new Information("Yo soy su machete","Yo soy su enamorado", R.raw.jergas_peruanas_yo_soy_su_machete));
 
         // Create an {@link InformationAdapter}, whose data source is a list of {@link Information}s.
         // The adapter know hows to create list items for each item in the list.
         InformationAdapter adapter =
-                new InformationAdapter(this, informations, R.color.category_tourist_places);
+                new InformationAdapter(getActivity(), informations, R.color.category_slang);
 
         // Find the {@ListView} object in the view hierarchy of the {@link Activity}.
         // The should be a {@link ListView} with the view ID called list, which is declared in the
         // word_list.xml layout file.
-        ListView listView = findViewById(R.id.list);
+        ListView listView = rootView.findViewById(R.id.list);
 
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Information} in the list.
@@ -130,7 +143,7 @@ public class PlacesActivity extends AppCompatActivity
 
                     // Create and set up the {@link MediaPlayer} for the audio resource associated
                     // with the current Information object.
-                    mMediaPlayer = MediaPlayer.create(PlacesActivity.this, information.getmAudioResourceId());
+                    mMediaPlayer = MediaPlayer.create(getActivity(), information.getmAudioResourceId());
 
                     // Start the audio file.
                     mMediaPlayer.start();
@@ -141,10 +154,12 @@ public class PlacesActivity extends AppCompatActivity
                 }
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop()
+    public void onStop()
     {
         super.onStop();
         // When the activity is stopped, release the media player resources because we won't

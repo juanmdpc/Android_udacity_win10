@@ -1,18 +1,25 @@
 package com.example.tour_guide;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class RestaurantsActivity extends AppCompatActivity
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PlacesFragment extends Fragment
 {
     /** Handles playback of all the sound files */
     private MediaPlayer mMediaPlayer;
@@ -20,7 +27,7 @@ public class RestaurantsActivity extends AppCompatActivity
     /**
      * This listener gets triggered when the {@link MediaPlayer} has completed playing the audio file.
      */
-    private MediaPlayer.OnCompletionListener mCompleteListener = new MediaPlayer.OnCompletionListener()
+    private MediaPlayer.OnCompletionListener mOnCompletionListener = new MediaPlayer.OnCompletionListener()
     {
         @Override
         public void onCompletion(MediaPlayer mp)
@@ -51,7 +58,7 @@ public class RestaurantsActivity extends AppCompatActivity
                         releaseMediaPlayer();
                     }
                     else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT ||
-                                focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
+                            focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK)
                     {
                         // The AUDIOFOCUS_LOSS_TRANSIENT case that we've lost audio focus
                         // short amount of time. The AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK case
@@ -66,38 +73,43 @@ public class RestaurantsActivity extends AppCompatActivity
                 }
             };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public PlacesFragment()
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.information_list);
+        // Required empty public constructor
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View rootView = inflater.inflate(R.layout.information_list, container, false);
 
         // Create and set up the {@link AudioManager} to request audio focus.
-        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
 
         // Create a list of Information objects
         final ArrayList<Information> informations = new ArrayList<>();
 
-        informations.add(new Information("AmorAmar","Av. Garcilaso 153", R.drawable.restaurante_amoramar, R.raw.restaurante_amoramar));
-        informations.add(new Information("Nanka","Av. Rivaguero 443", R.drawable.restaurant_nanka, R.raw.restaurant_nanka));
-        informations.add(new Information("Central","Av. Los Cordales 512", R.drawable.restaurante_central, R.raw.restaurante_central));
-        informations.add(new Information("El Hornero","Av. Miguel Grau 124", R.drawable.restaurante_el_hornero, R.raw.restaurante_el_hornero));
-        informations.add(new Information("La Cuadra de Salvador","Av. Manuel Olguin 233", R.drawable.restaurante_la_cuadra_de_salvador, R.raw.restaurante_la_cuadra_de_salvador));
-        informations.add(new Information("La Rosa Nautica","Av. Perales 587", R.drawable.restaurante_la_rosa_nautica, R.raw.restaurante_la_rosa_nautica));
-        informations.add(new Information("Mayta","Av. Los Girasoles 229", R.drawable.restaurante_mayta, R.raw.restaurante_mayta));
-        informations.add(new Information("Social","Av. El Muro 574", R.drawable.restaurante_social, R.raw.restaurante_social));
-        informations.add(new Information("IK","Av. Panama 149", R.drawable.restaurante_ik, R.raw.restaurante_ik));
-        informations.add(new Information("La Cabrera","Av. Los Peregrinos 554", R.drawable.restaurante_la_cabrera, R.raw.restaurante_la_cabrera));
+        informations.add(new Information("Barranco","Av. Garcilaso 153", R.drawable.lugar_turistico_barrancho, R.raw.lugar_turistico_barrancho));
+        informations.add(new Information("Barrio Chino","Av. Rivaguero 443",R.drawable.lugar_turistico_barrio_chino, R.raw.lugar_turistico_barrio_chino));
+        informations.add(new Information("Circuito Magico de las Aguas","Av. Los Cordales 512",R.drawable.lugar_turistico_circuito_magico_agua, R.raw.lugar_turistico_circuito_magico_agua));
+        informations.add(new Information("Convento San Francisco","Av. Miguel Grau 124",R.drawable.lugar_turistico_convento_san_franscisco, R.raw.lugar_turistico_convento_san_franscisco));
+        informations.add(new Information("Larcomar","Av. Manuel Olguin 233",R.drawable.lugar_turistico_larcomar, R.raw.lugar_turistico_larcomar));
+        informations.add(new Information("Malecon","Av. Perales 587",R.drawable.lugar_turistico_malecon, R.raw.lugar_turistico_malecon));
+        informations.add(new Information("Mercado Central","Av. Los Girasoles 229",R.drawable.lugar_turistico_mercado_central, R.raw.lugar_turistico_mercado_central));
+        informations.add(new Information("Parque del Amor","Av. El Muro 574",R.drawable.lugar_turistico_parque_amor, R.raw.lugar_turistico_parque_amor));
+        informations.add(new Information("Plaza de Armas","Av. Panama 149",R.drawable.lugar_turistico_plaza_de_armas, R.raw.lugar_turistico_plaza_de_armas));
+        informations.add(new Information("Plaza San Martin","Av. Los Peregrinos 554",R.drawable.lugar_turistico_plaza_san_martin, R.raw.lugar_turistico_plaza_san_martin));
 
         // Create an {@link InformationAdapter}, whose data source is a list of {@link Information}s.
         // The adapter know hows to create list items for each item in the list.
         InformationAdapter adapter =
-                new InformationAdapter(this, informations, R.color.category_restaurants);
+                new InformationAdapter(getActivity(), informations, R.color.category_tourist_places);
 
         // Find the {@ListView} object in the view hierarchy of the {@link Activity}.
         // The should be a {@link ListView} with the view ID called list, which is declared in the
         // word_list.xml layout file.
-        ListView listView = findViewById(R.id.list);
+        ListView listView = rootView.findViewById(R.id.list);
 
         // Make the {@link ListView} use the {@link WordAdapter} we created above, so that the
         // {@link ListView} will display list items for each {@link Information} in the list.
@@ -130,21 +142,23 @@ public class RestaurantsActivity extends AppCompatActivity
 
                     // Create and set up the {@link MediaPlayer} for the audio resource associated
                     // with the current Information object.
-                    mMediaPlayer = MediaPlayer.create(RestaurantsActivity.this, information.getmAudioResourceId());
+                    mMediaPlayer = MediaPlayer.create(getActivity(), information.getmAudioResourceId());
 
                     // Start the audio file.
                     mMediaPlayer.start();
 
                     // Set up listener on the media player, so that we can stop and release the
                     // media player once the sound has finished playing.
-                    mMediaPlayer.setOnCompletionListener(mCompleteListener);
+                    mMediaPlayer.setOnCompletionListener(mOnCompletionListener);
                 }
             }
         });
+
+        return rootView;
     }
 
     @Override
-    protected void onStop()
+    public void onStop()
     {
         super.onStop();
         // When the activity is stopped, release the media player resources because we won't
@@ -155,7 +169,7 @@ public class RestaurantsActivity extends AppCompatActivity
     /**
      * Clean up the media player by releasing its resources.
      */
-    private void releaseMediaPlayer()
+    public void releaseMediaPlayer()
     {
         // If the media player is not null, then it may be currently playing a sound.
         if (mMediaPlayer != null)
