@@ -12,22 +12,33 @@
         <activity
             android:name=".SlangActivity"
             android:label="@string/category_slang">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
         </activity>
 
         <activity
             android:name=".PlacesActivity"
             android:label="@string/category_tourist_places">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity"/>
         </activity>
 
         <activity
             android:name=".MuseumsActivity"
             android:label="@string/category_museums">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
 
         </activity>
         <activity
             android:name=".RestaurantsActivity"
             android:label="@string/category_restaurants">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
 
         </activity>
 
